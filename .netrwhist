@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home/disk10/billowqiu/work/app/gensoft/security-client/bav-cloud/jobschedule/schedule_server'
+let g:netrw_dirhist_2='/home/disk10/billowqiu/work/app/gensoft/security-client/bav-cloud/jobschedule'
+let g:netrw_dirhist_3='/home/disk10/billowqiu/work/app/gensoft/security-client/bav-cloud/jobschedule/proto'
+let g:netrw_dirhist_4='/home/disk10/billowqiu/work/app/gensoft/security-client/bav-cloud/jobschedule/schedule_server/src'
+let g:netrw_dirhist_5='/home/disk10/billowqiu/work/app/gensoft/security-client/bav-cloud/jobschedule/proto'
+let g:netrw_dirhist_6='/home/disk10/billowqiu/.vim.bak'
