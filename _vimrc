@@ -7,6 +7,7 @@ endif
 "call pathogen#runtime_append_all_bundles()
 call pathogen#infect() 
 
+"按esc取消高亮显示
 nnoremap <silent> <unique> <ESC> :nohls<CR><ESC>
 
 " 设置当文件被改动时自动载入
