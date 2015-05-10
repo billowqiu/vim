@@ -153,7 +153,6 @@ colo miracle
 "colorscheme torte
 "colorscheme murphy
 "colorscheme desert 
-"colorscheme desert 
 "colorscheme elflord
 "colorscheme ron
 if has('gui_running')
@@ -190,7 +189,6 @@ func SetTitle()
 		call append(line(".")+3, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
 		call append(line(".")+4, "\# Last Changed: ".strftime("%Y-%m-%d %H:%M:%S"))
 		call append(line(".")+5, "\#########################################################################")
-		
 		call append(line(".")+6, "\#!/bin/bash")
 		call append(line(".")+7, "")
 	elseif &filetype == 'python'
@@ -201,32 +199,33 @@ func SetTitle()
 		call append(line(".")+3, "\# Author: billowqiu") 
 		call append(line(".")+4, "\# mail: qiutao@baidu.com") 
 		call append(line(".")+5, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
-		call append(line(".")+6, "\#########################################################################") 
-		call append(line(".")+7, "")		
+		call append(line(".")+6, "\# Last Changed: ".strftime("%Y-%m-%d %H:%M:%S"))
+		call append(line(".")+7, "\#########################################################################") 
+		call append(line(".")+8, "")		
 	elseif &filetype == 'cpp' || &filetype == 'c'
 		call setline(1, "/*************************************************************************") 
-		call append(line("."), "	> File Name: ".expand("%")) 
+		call append(line("."),   "	> File Name: ".expand("%")) 
 		call append(line(".")+1, "	> Author: billowqiu") 
 		call append(line(".")+2, "	> Mail: qiutao@baidu.com ") 
 		call append(line(".")+3, "	> Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
-		call append(line(".")+4, " ************************************************************************/")
+		call append(line(".")+4, "	> Last Changed: ".strftime("%Y-%m-%d %H:%M:%S")) 
+		call append(line(".")+5, "*************************************************************************/")
 		if expand("%:e") == "h" || expand("%:e") == "hpp"
-			call append(line(".")+5, "#ifndef _".toupper(expand("%:t:r"))."_H_") 
-			call append(line(".")+6, "#define _".toupper(expand("%:t:r"))."_H_")
-			call append(line(".")+7, "")
-			call append(line(".")+8, "#endif //".toupper(expand("%:t:r"))."_H_")
-			call append(line(".")+9, "")
+			call append(line(".")+6, "#ifndef _".toupper(expand("%:t:r"))."_H_") 
+			call append(line(".")+7, "#define _".toupper(expand("%:t:r"))."_H_")
+			call append(line(".")+8, "")
+			call append(line(".")+9, "#endif //".toupper(expand("%:t:r"))."_H_")
+			call append(line(".")+10, "")
 		endif
 	endif
 endfunc
 
 "更新修改时间
 function UpdateModifyDatetime()
-	call cursor(4,1)
-	if search("Last Changed") != 0
-		let line = line(".")
-		call setline(line,"\# Last Changed: ".strftime("%Y-%m-%d %H:%M:%S"))
-	endif
+    if search("Last Changed") != 0
+        let line = line(".")
+        call setline(line,"\# Last Changed: ".strftime("%Y-%m-%d %H:%M:%S"))
+    endif
 endfunction
 
 "自动补全
