@@ -1,5 +1,5 @@
 if has('unix')
-    set runtimepath+=$HOME/.vim_billowqiu/
+    set runtimepath+=$HOME/.vim/
 endif
 
 "must be called before filetype on
@@ -150,11 +150,8 @@ endif
 
 " 设置配色方案
 colo miracle
-"colorscheme torte
-"colorscheme murphy
-"colorscheme desert 
-"colorscheme elflord
-"colorscheme ron
+colorscheme molokai
+
 if has('gui_running')
     if has('mac')
         set guifont=Monaco:h14
@@ -418,7 +415,7 @@ au FileType c,cpp call s:MapJoinWithLeaders('//\\|\\')
 " thrift {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile *.thrift set filetype=thrift
-au! Syntax thrift source ~/.vim_billowqiu/syntax/thrift.vim
+au! Syntax thrift source ~/.vim/syntax/thrift.vim
 
 " End of thrift }}}
 "
@@ -426,7 +423,7 @@ au! Syntax thrift source ~/.vim_billowqiu/syntax/thrift.vim
 " protobuf {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile *.proto set filetype=proto
-au! Syntax proto source ~/.vim_billowqiu/syntax/proto.vim
+au! Syntax proto source ~/.vim/syntax/proto.vim
 
 " End of protobuf }}}
 
