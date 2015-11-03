@@ -26,13 +26,13 @@ set nobackup
 :set makeprg=g++\ -Wall\ \ %
 "自动保存
 set autowrite
+set autowriteall
+let autosave=5
 set ruler                   " 打开状态栏标尺
 "set cursorline              " 突出显示当前行
 set magic                   " 设置魔术
 set guioptions-=T           " 隐藏工具栏
 set guioptions-=m           " 隐藏菜单栏
-"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
-" 设置在状态行显示的信息
 set foldcolumn=0
 set foldmethod=indent 
 set foldlevel=3 
@@ -87,9 +87,9 @@ set backspace=2
 " 允许backspace和光标键跨越行边界
 set whichwrap+=<,>,h,l
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-set mouse=a
+""set mouse=a
 set selection=exclusive
-set selectmode=mouse,key
+""set selectmode=mouse,key
 " 通过使用: commands命令，告诉我们文件的哪一行被改变过
 set report=0
 " 在被分割的窗口间显示空白，便于阅读
@@ -131,9 +131,17 @@ set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离
 set novisualbell    " 不要闪烁(不明白)
 
 " 我的状态行显示的内容（包括文件类型和解码）
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+set statusline=%F%m%r%h%w\ [%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\-\%H:%M\")}
 "set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
+""set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-6.(%l,%c%V%)\ [%{&ff}]\ %y\ %P
+let &statusline = substitute(&statusline,
+                            \'%=',
+                            \'%=%{winwidth(0)}x%{winheight(0)}   ',
+                            \'')
 set laststatus=2	"启动显示状态行(1),总是显示状态行(2)
+set fileformats=unix,dos
+
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set cmdheight=2
 
@@ -149,8 +157,10 @@ if version >= 603
 endif
 
 " 设置配色方案
-colo miracle
+" colo miracle
 colorscheme molokai
+highlight NonText guibg=#060606
+highlight Folded  guibg=#0A0A0A guifg=#9090D0
 
 if has('gui_running')
     if has('mac')
@@ -277,14 +287,6 @@ set number
 
 set cursorline
 
-set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-6.(%l,%c%V%)\ [%{&ff}]\ %y\ %P
-let &statusline = substitute(&statusline,
-                            \'%=',
-                            \'%=%{winwidth(0)}x%{winheight(0)}   ',
-                            \'')
-set laststatus=2
-
-set fileformats=unix,dos
 
 " Function to insert the current date
 function s:InsertCurrentDate()
@@ -374,6 +376,11 @@ function s:SetSysTags()
     endif
 endfunction
 
+function s:SetTags()
+    set tags+=./tags
+    set tags+=../tags
+endfunction
+
 function s:HighlightSpaceErrors()
     " Highlight space errors in C/C++ source files.
     " :help ft-c-syntax
@@ -394,7 +401,8 @@ endfunction
 
 " Setup basic C/C++ development envionment
 function s:SetupCppEnv()
-    call s:SetSysTags()
+    " call s:SetSysTags()
+    call s:SetTags()
     call s:HighlightSpaceErrors()
     call s:TuneCHighlight()
     call s:SetCPPIndent()
