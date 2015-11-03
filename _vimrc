@@ -434,6 +434,14 @@ au BufRead,BufNewFile *.proto set filetype=proto
 au! Syntax proto source ~/.vim/syntax/proto.vim
 
 " End of protobuf }}}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" nginx {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead,BufNewFile *.nginx set ft=nginx
+au BufRead,BufNewFile */etc/nginx/* set ft=nginx
+au BufRead,BufNewFile */usr/local/nginx/conf/* set ft=nginx
+au BufRead,BufNewFile nginx.conf set ft=nginx
+" End of nginx}}}
 
 "NERDtee设定
 let NERDChristmasTree=1
