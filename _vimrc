@@ -33,10 +33,7 @@ set ruler                   " 打开状态栏标尺
 set magic                   " 设置魔术
 set guioptions-=T           " 隐藏工具栏
 set guioptions-=m           " 隐藏菜单栏
-set foldcolumn=0
-set foldmethod=indent 
-set foldlevel=3 
-set foldenable              " 开始折叠
+
 "去掉输入错误的提示声音
 set noeb
 "在处理未保存或只读文件的时候，弹出确认
@@ -145,8 +142,18 @@ set fileformats=unix,dos
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set cmdheight=2
 
-set foldenable		"允许折叠  
-set foldmethod=manual   "手动折叠  
+set foldmethod=indent
+au BufWinLeave * silent mkview  " 保存文件的折叠状态
+au BufRead * silent loadview    " 恢复文件的折叠状态
+nnoremap <space> za             " 用空格来切换折叠状态
+
+"set foldenable		"允许折叠  
+"set foldmethod=manual   "手动折叠  
+"set foldcolumn=0
+"set foldmethod=indent 
+"set foldlevel=3 
+"set foldenable              " 开始折叠
+"
 set background=dark	"背景使用黑色 
 set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 
@@ -192,7 +199,7 @@ func SetTitle()
 		call setline(1,"\#########################################################################") 
 		call append(line("."), "\# File Name: ".expand("%"))
 		call append(line(".")+1, "\# Author: billowqiu")
-		call append(line(".")+2, "\# mail: qiutao@baidu.com")
+		call append(line(".")+2, "\# mail: billowqiu@163.com")
 		call append(line(".")+3, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S"))
 		call append(line(".")+4, "\# Last Changed: ".strftime("%Y-%m-%d %H:%M:%S"))
 		call append(line(".")+5, "\#########################################################################")
@@ -204,7 +211,7 @@ func SetTitle()
 		call append(line(".")+1,"\#########################################################################") 
 		call append(line(".")+2, "\# File Name: ".expand("%")) 
 		call append(line(".")+3, "\# Author: billowqiu") 
-		call append(line(".")+4, "\# mail: qiutao@baidu.com") 
+		call append(line(".")+4, "\# mail: billowqiu@163.com") 
 		call append(line(".")+5, "\# Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
 		call append(line(".")+6, "\# Last Changed: ".strftime("%Y-%m-%d %H:%M:%S"))
 		call append(line(".")+7, "\#########################################################################") 
@@ -213,7 +220,7 @@ func SetTitle()
 		call setline(1, "/*************************************************************************") 
 		call append(line("."),   "	> File Name: ".expand("%")) 
 		call append(line(".")+1, "	> Author: billowqiu") 
-		call append(line(".")+2, "	> Mail: qiutao@baidu.com ") 
+		call append(line(".")+2, "	> Mail: billowqiu@billowqiu.com ") 
 		call append(line(".")+3, "	> Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
 		call append(line(".")+4, "	> Last Changed: ".strftime("%Y-%m-%d %H:%M:%S")) 
 		call append(line(".")+5, "*************************************************************************/")
@@ -442,6 +449,21 @@ au BufRead,BufNewFile */etc/nginx/* set ft=nginx
 au BufRead,BufNewFile */usr/local/nginx/conf/* set ft=nginx
 au BufRead,BufNewFile nginx.conf set ft=nginx
 " End of nginx}}}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" json {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufNewFile,BufRead *.json setlocal filetype=json
+autocmd BufNewFile,BufRead *.jsonp setlocal filetype=json
+autocmd BufNewFile,BufRead *.geojson setlocal filetype=json
+" End of json}}}
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" scons {{{
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufNewFile,BufRead SCons* set filetype=scons
+" End of scons}}}
+
+
 
 "NERDtee设定
 let NERDChristmasTree=1
