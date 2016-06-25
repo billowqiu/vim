@@ -8,7 +8,10 @@ endif
 call pathogen#infect() 
 
 "按esc取消高亮显示
-nnoremap <silent> <unique> <ESC> :nohls<CR><ESC>
+"nnoremap <silent> <unique> <ESC> :nohls<CR><ESC>
+"按\h取消高亮显示,上面这句在有些情况会导致打开文件直接进入了REPLACE模式!!!
+"nnoremap <silent> <unique> <ESC> :nohls<CR><ESC>
+nnoremap \h  :nohlsearch<CR>
 
 " 设置当文件被改动时自动载入
 set autoread
@@ -120,7 +123,6 @@ set guifont=Courier_New:h10:cANSI   " 设置字体
 syntax on           " 语法高亮  
 "autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
 "autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-set ruler           " 显示标尺  
 set showcmd         " 输入的命令显示出来，看的清楚些  
 set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
 set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
@@ -131,7 +133,7 @@ set novisualbell    " 不要闪烁(不明白)
 "set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
 set statusline=%F%m%r%h%w\ [%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\-\%H:%M\")}
 "set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
-""set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-6.(%l,%c%V%)\ [%{&ff}]\ %y\ %P
+"set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-6.(%l,%c%V%)\ [%{&ff}]\ %y\ %P
 let &statusline = substitute(&statusline,
                             \'%=',
                             \'%=%{winwidth(0)}x%{winheight(0)}   ',
@@ -155,7 +157,7 @@ nnoremap <space> za             " 用空格来切换折叠状态
 "set foldenable              " 开始折叠
 "
 set background=dark	"背景使用黑色 
-set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+set nocompatible    "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 
 " 显示中文帮助
 if version >= 603
