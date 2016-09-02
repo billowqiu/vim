@@ -156,8 +156,6 @@ nnoremap <space> za             " 用空格来切换折叠状态
 "set foldlevel=3 
 "set foldenable              " 开始折叠
 "
-set background=dark	"背景使用黑色 
-set nocompatible    "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
 
 " 显示中文帮助
 if version >= 603
@@ -165,9 +163,18 @@ if version >= 603
 	set encoding=utf-8
 endif
 
+
+set nocompatible    "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+
+"set background=dark	"背景使用黑色 
+"set background=light   "背景使用亮色 
 " 设置配色方案
-" colo miracle
-colorscheme molokai
+"colorscheme miracle
+"colorscheme molokai
+"在不支持solarized配色的终端上面，需要设置下面这行
+let g:solarized_termcolors=256
+colorscheme solarized
+
 highlight NonText guibg=#060606
 highlight Folded  guibg=#0A0A0A guifg=#9090D0
 
