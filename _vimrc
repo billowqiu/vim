@@ -12,7 +12,8 @@ call pathogen#infect()
 "按\h取消高亮显示,上面这句在有些情况会导致打开文件直接进入了REPLACE模式!!!
 "nnoremap <silent> <unique> <ESC> :nohls<CR><ESC>
 nnoremap \h  :nohlsearch<CR>
-
+" 设置非兼容模式
+set nocp
 " 设置当文件被改动时自动载入
 set autoread
 " quickfix模式
@@ -21,6 +22,10 @@ autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
 set completeopt=preview,menu 
 "允许插件  
 filetype plugin on
+" 侦测文件类型
+filetype on
+" 为特定文件类型载入相关缩进文件
+filetype indent on
 "共享剪贴板  
 set clipboard+=unnamed 
 "从不备份  
@@ -45,7 +50,7 @@ set confirm
 set autoindent
 set cindent
 " Tab键的宽度
-set tabstop=4
+set tabstop=2
 " 统一缩进为4
 set softtabstop=4
 set shiftwidth=4
@@ -67,13 +72,6 @@ set hlsearch
 set incsearch
 "行内替换
 set gdefault
-
-" 侦测文件类型
-filetype on
-" 载入文件类型插件
-filetype plugin on
-" 为特定文件类型载入相关缩进文件
-filetype indent on
 " 保存全局变量
 set viminfo+=!
 " 带有如下符号的单词不要被换行分割
@@ -109,7 +107,7 @@ set completeopt=longest,menu
 set enc=utf-8
 set langmenu=zh_CN.UTF-8
 set helplang=cn
-set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+set fencs=utf-9,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 set termencoding=utf-8
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936
@@ -170,10 +168,10 @@ set nocompatible    "去掉讨厌的有关vi一致性模式，避免以前版本
 "set background=light   "背景使用亮色 
 " 设置配色方案
 "colorscheme miracle
-"colorscheme molokai
+colorscheme molokai
 "在不支持solarized配色的终端上面，需要设置下面这行
-let g:solarized_termcolors=256
-colorscheme solarized
+"let g:solarized_termcolors=256
+"colorscheme solarized
 
 highlight NonText guibg=#060606
 highlight Folded  guibg=#0A0A0A guifg=#9090D0
@@ -393,6 +391,7 @@ function s:SetSysTags()
 endfunction
 
 function s:SetTags()
+    set tags+=/data/billowqiu/taf.tags
     set tags+=./tags
     set tags+=../tags
 endfunction
@@ -587,6 +586,82 @@ let g:neocomplcache_omni_patterns.cpp = '.*\.\|->\|::'
 "
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin - neocomplete.vim {{{
+" http://www.vim.org/scripts/script.php?script_id=1643
+" https://github.com/Shougo/neocomplete.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+"
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+     \ 'default' : '',
+         \ 'vimshell' : $HOME.'/.vimshell_hist',
+             \ 'scheme' : $HOME.'/.gosh_completions'
+                     \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+" Plugin key-mappings.
+inoremap <expr><C-g> neocomplete#undo_completion()
+inoremap <expr><C-l> neocomplete#complete_common_string()
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+" For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType cpp set omnifunc=omni#cpp#complete#Main
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" End of neocomplete.vim
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin - SuperTab {{{
 " http://www.vim.org/scripts/script.php?script_id=1643
 " http://github.com/ervandew/supertab
@@ -603,3 +678,22 @@ let g:SuperTabLeadingSpaceCompletion = 0
 
 " End of SuperTab }}}
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin - NERD_tree {{{
+" http://www.vim.org/scripts/script.php?script_id=1658
+" http://github.com/scrooloose/nerdtree
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let omnicpp_displaymode = 1
+let OmniCpp_NamespaceSearch = 1  
+let OmniCpp_GlobalScopeSearch = 1  
+let OmniCpp_ShowAccess = 1  
+let OmniCpp_ShowPrototypeInAbbr = 1 " 显示函数参数列表  
+let OmniCpp_MayCompleteDot = 1   " 输入 .  后自动补全  
+let OmniCpp_MayCompleteArrow = 1 " 输入 -> 后自动补全  
+let OmniCpp_MayCompleteScope = 1 " 输入 :: 后自动补全  
+let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]  
+" 自动关闭补全窗口  
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif  
+set completeopt=menuone,menu,longest 
+
+" End of omnicpp }}}
