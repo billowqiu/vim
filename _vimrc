@@ -107,10 +107,14 @@ set completeopt=longest,menu
 set enc=utf-8
 set langmenu=zh_CN.UTF-8
 set helplang=cn
-set fencs=utf-9,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+"Vim 在与屏幕/键盘交互时使用的编码
 set termencoding=utf-8
+"vim内部使用的编码
 set encoding=utf-8
+"Vim 打开文件时的尝试使用的编码
 set fileencodings=ucs-bom,utf-8,cp936
+"Vim 当前编辑的文件在存储时的编码
 set fileencoding=utf-8
 
 "显示相关  
@@ -142,18 +146,13 @@ set fileformats=unix,dos
 " 命令行（在状态行下）的高度，默认为1，这里是2
 set cmdheight=2
 
+" 开始折叠
 set foldmethod=indent
+set foldenable
+
 au BufWinLeave * silent mkview  " 保存文件的折叠状态
 au BufRead * silent loadview    " 恢复文件的折叠状态
 nnoremap <space> za             " 用空格来切换折叠状态
-
-"set foldenable		"允许折叠  
-"set foldmethod=manual   "手动折叠  
-"set foldcolumn=0
-"set foldmethod=indent 
-"set foldlevel=3 
-"set foldenable              " 开始折叠
-"
 
 " 显示中文帮助
 if version >= 603
