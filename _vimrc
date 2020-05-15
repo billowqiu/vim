@@ -37,7 +37,7 @@ set autowrite
 set autowriteall
 let autosave=5
 set ruler                   " 打开状态栏标尺
-"set cursorline              " 突出显示当前行
+set cursorline              " 突出显示当前行
 set magic                   " 设置魔术
 set guioptions-=T           " 隐藏工具栏
 set guioptions-=m           " 隐藏菜单栏
@@ -49,15 +49,20 @@ set confirm
 "自动缩进
 set autoindent
 set cindent
+
+" 用来在可用空间的中间或右侧对齐项目
+set titlelen=0
 " Tab键的宽度
 set tabstop=4
 " 统一缩进为4
-set softtabstop=4
 set shiftwidth=4
-" 不要用空格代替制表符
-set noexpandtab
+" softtabstop的值为负数,会使用shiftwidth的值,两者保持一致,方便统一缩进.
+set softtabstop=-1
+" 用空格代替制表符
+set expandtab
 " 在行和段开始处使用制表符
 set smarttab
+
 " 显示行号
 set number
 " 历史记录数
@@ -102,6 +107,8 @@ set scrolloff=3
 set smartindent
 "打开文件类型检测, 加了这句才可以用智能补全
 set completeopt=longest,menu
+"打开文件时，显示上传操作的行
+set display=lastline
 
 "编码&语言设置
 set enc=utf-8
@@ -143,8 +150,8 @@ let &statusline = substitute(&statusline,
 set laststatus=2	"启动显示状态行(1),总是显示状态行(2)
 set fileformats=unix,dos
 
-" 命令行（在状态行下）的高度，默认为1，这里是2
-set cmdheight=2
+" 命令行（在状态行下）的高度，默认为1
+set cmdheight=1
 
 " 开始折叠
 set foldmethod=indent
@@ -155,19 +162,17 @@ au BufRead * silent loadview    " 恢复文件的折叠状态
 nnoremap <space> za             " 用空格来切换折叠状态
 
 " 显示中文帮助
-if version >= 603
-	set helplang=cn
-	set encoding=utf-8
-endif
-
-
-set nocompatible    "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+set helplang=cn
+"去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+set nocompatible    
+" Make vim CJK-friendly
+set formatoptions+=mM
 
 "set background=dark	"背景使用黑色 
 "set background=light   "背景使用亮色 
 " 设置配色方案
 "colorscheme miracle
-colorscheme molokai
+colorscheme onedark 
 "在不支持solarized配色的终端上面，需要设置下面这行
 "let g:solarized_termcolors=256
 "colorscheme solarized
@@ -194,7 +199,7 @@ endif
 """""新文件标题
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "新建.h,.cpp,.py,.sh文件，自动插入文件头 
-autocmd BufNewFile *.h,*.cpp,*.hpp,*.c,*.py,*.sh exec ":call SetTitle()"
+autocmd BufNewFile *.h,*.cpp,*.cc,*.hpp,*.c,*.py,*.sh exec ":call SetTitle()"
 autocmd FileWritePre,BufWritePre *.h,*.py,*.sh ks|call UpdateModifyDatetime()|'s
 "新建文件后，自动定位到文件末尾
 autocmd BufNewFile * normal G
@@ -226,7 +231,7 @@ func SetTitle()
 		call setline(1, "/*************************************************************************") 
 		call append(line("."),   "	> File Name: ".expand("%")) 
 		call append(line(".")+1, "	> Author: billowqiu") 
-		call append(line(".")+2, "	> Mail: billowqiu@billowqiu.com ") 
+		call append(line(".")+2, "	> Mail: billowqiu@163.com ") 
 		call append(line(".")+3, "	> Created Time: ".strftime("%Y-%m-%d %H:%M:%S")) 
 		call append(line(".")+4, "	> Last Changed: ".strftime("%Y-%m-%d %H:%M:%S")) 
 		call append(line(".")+5, "*************************************************************************/")
@@ -251,8 +256,6 @@ endfunction
 "自动补全
 :inoremap ( ()<ESC>i
 :inoremap ) <c-r>=ClosePair(')')<CR>
-":inoremap { {<CR>}<ESC>O
-":inoremap } <c-r>=ClosePair('}')<CR>
 :inoremap [ []<ESC>i
 :inoremap ] <c-r>=ClosePair(']')<CR>
 :inoremap " ""<ESC>i
@@ -268,10 +271,6 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Formats/Style {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set expandtab
-set display=lastline
-set clipboard=unnamed
-
 if has('win32') || has('win64')
     set shellslash
 endif
@@ -285,16 +284,6 @@ if has('gui_running')
     set guioptions-=T
     set guioptions+=c
 endif
-set titlelen=0
-
-" Make vim CJK-friendly
-set formatoptions+=mM
-
-" Show line number
-set number
-
-set cursorline
-
 
 " Function to insert the current date
 function s:InsertCurrentDate()
@@ -369,12 +358,6 @@ let g:is_bash = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " C/C++ {{{
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function s:GNUIndent()
-    setlocal cinoptions=>4,n-2,{2,^-2,:2,=2,g0,h2,p5,t0,+2,(0,u0,w1,m1
-    setlocal shiftwidth=2
-    setlocal tabstop=8
-endfunction
-
 function s:SetSysTags()
     " include system tags, :help ft-c-omni
     if has('unix')
@@ -385,9 +368,9 @@ function s:SetSysTags()
 endfunction
 
 function s:SetTags()
-    set tags+=/data/billowqiu/taf.tags
     set tags+=./tags
     set tags+=../tags
+    set tags+=./std.tags
 endfunction
 
 function s:HighlightSpaceErrors()
@@ -416,11 +399,6 @@ function s:SetupCppEnv()
     call s:TuneCHighlight()
     call s:SetCPPIndent()
 endfunction
-
-" Setting for files following the GNU coding standard
-if has('unix')
-    au BufEnter /usr/include/* call s:GNUIndent()
-endif
 
 au FileType c,cpp setlocal commentstring=\ //%s
 au FileType c,cpp call s:SetupCppEnv()
