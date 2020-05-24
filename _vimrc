@@ -18,6 +18,7 @@ set nocp
 set autoread
 " quickfix模式
 autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
 "代码补全 
 set completeopt=preview,menu 
 "允许插件  
